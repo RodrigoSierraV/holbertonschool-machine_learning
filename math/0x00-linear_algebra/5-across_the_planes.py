@@ -4,22 +4,15 @@ Contains a method that adds two matrices element-wise
 """
 
 
-def matrix_shape(matrix):
-    """
-        Recursive function that finds the size of a matrix
-        Return: A list of integers
-    """
-    if isinstance(matrix[0], list):
-        return [len(matrix)] + matrix_shape(matrix[0])
-    return [len(matrix)]
-
-
 def add_matrices2D(mat1, mat2):
     """
         Function adds two matrices element-wise
-        Return: A list of integers
+        Return: A new matrix
     """
-    if matrix_shape(mat1) != matrix_shape(mat2):
-        return
-    return [[mat1[i][j] + mat2[i][j] for j in range(len(mat1[i]))]
-            for i in range(len(mat1))]
+    verify_len1 = len(mat1) == len(mat2)
+    if verify_len1:
+        verify_len2 = all([len(mat1[i]) == len(mat2[i]) for i in range(len(mat1))])
+        if verify_len2:
+            return [[mat1[i][j] + mat2[i][j] for j in range(len(mat1[i]))]
+                    for i in range(len(mat1))]
+    return
