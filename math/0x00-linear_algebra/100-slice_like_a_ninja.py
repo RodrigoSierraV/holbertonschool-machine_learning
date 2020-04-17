@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 """
-Contains a method that slices a matrix along a specific axes
+Contains a method that slices a matrix along specific axes
 """
 
 
 def np_slice(matrix, axes={}):
     """
-    Function that slices a matrix along a specific axes
+    Function that slices a matrix along specific axes
     """
-    for ax, value in axes.items():
-        print(matrix[value[0]:value[1]], '*******')
-    return matrix[value[0]:value[1]: ax]
+    l = []
+    for i in range(len(matrix.shape)):
+        if i not in axes:
+            l.append(slice(None, None, None))
+            continue
+        l.append(slice(*axes[i]))
+    return matrix[tuple(l)]
