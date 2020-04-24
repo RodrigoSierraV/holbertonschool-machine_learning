@@ -8,6 +8,6 @@ def poly_derivative(poly):
     if verify is False:
         return
     derivative = [poly[coef] * coef for coef in range(1, len(poly))]
-    if sum(derivative) == 0 or len(derivative) == 0:
+    if sum(derivative) == 0:
         return [0]
     return derivative
