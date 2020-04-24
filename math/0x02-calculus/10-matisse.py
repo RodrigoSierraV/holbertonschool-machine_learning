@@ -7,4 +7,7 @@ def poly_derivative(poly):
     verify = all([isinstance(i, int) for i in poly])
     if verify is False:
         return
-    return [poly[coef] * coef for coef in range(1, len(poly))]
+    derivative = [poly[coef] * coef for coef in range(1, len(poly))]
+    if sum(derivative) == 0 or len(derivative) == 0:
+        return [0]
+    return derivative
