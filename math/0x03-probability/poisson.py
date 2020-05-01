@@ -42,3 +42,15 @@ class Poisson:
         pmf = (exp * average) / factorial
 
         return pmf
+
+    def cdf(self, k):
+        """cumulative distribution function"""
+        if k < 0:
+            return 0
+        k = int(k)
+
+        cdf = 0
+        for i in range(k + 1):
+            cdf += (self.pmf(i))
+
+        return cdf
