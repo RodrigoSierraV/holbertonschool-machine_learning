@@ -24,3 +24,11 @@ class Normal:
                 raise TypeError('data must be a list')
             if len(data) < 2:
                 raise ValueError('data must contain multiple values')
+
+    def z_score(self, x):
+        """ z-score of a given x-value """
+        return (x - self.mean) / self.stddev
+
+    def x_value(self, z):
+        """ x-value of a given z-score"""
+        return (z * self.stddev) + self.mean
