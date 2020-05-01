@@ -32,7 +32,7 @@ class Binomial():
         return num * self.factorial(num - 1) if num > 1 else 1
 
     def pmf(self, k):
-        """ PMF """
+        """ Computes PMF """
         k = int(k)
 
         if k < 0:
@@ -44,3 +44,14 @@ class Binomial():
         prob = (self.p ** k) * (1 - self.p) ** (self.n - k)
 
         return factorial_n * prob / (factorial_k * factorial_n_k)
+
+    def cdf(self, k):
+        """Calculates CDF for a given x-value"""
+
+        k = int(k)
+        if k < 0:
+            return 0
+        cdf = 0
+        for i in range(k + 1):
+            cdf += self.pmf(i)
+        return cdf
