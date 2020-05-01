@@ -26,3 +26,21 @@ class Binomial():
             self.p = 1 - (var / mean)
             self.n = int(round(mean / self.p))
             self.p = mean / self.n
+
+    def factorial(self, num):
+        """Computes factorial of a number"""
+        return num * self.factorial(num - 1) if num > 1 else 1
+
+    def pmf(self, k):
+        """ PMF """
+        k = int(k)
+
+        if k < 0:
+            return 0
+
+        factorial_n = self.factorial(self.n)
+        factorial_k = self.factorial(k)
+        factorial_n_k = self.factorial(self.n - k)
+        prob = (self.p ** k) * (1 - self.p) ** (self.n - k)
+
+        return factorial_n * prob / (factorial_k * factorial_n_k)
