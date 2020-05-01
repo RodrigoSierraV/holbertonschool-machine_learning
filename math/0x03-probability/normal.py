@@ -42,3 +42,26 @@ class Normal:
         exp = -((x - self.mean) ** 2) / (2 * variance)
         density = (2 * pi * variance) ** (1 / 2)
         return (e ** exp) / density
+
+    def cdf(self, x):
+        """Calculates the value of the CDF for a given x-value"""
+        a = (x - self.mean) / (self.stddev * (2**0.5))
+        erf = self.erf(a)
+        return (1 + erf) / 2
+
+    def factorial(self, num):
+        """Computes factorial of a number"""
+        return num * self.factorial(num - 1) if num > 1 else 1
+
+    def erf(self, x):
+        """ error function """
+        pi = 3.1415926536
+        serie = 0
+        for i in range(5):
+            j = 2 * i + 1
+            density = self.factorial(i) * j
+            if j in [3, 7]:
+                serie += -(x ** (j)) / density
+            elif j in [1, 5, 9]:
+                serie += (x ** (j)) / density
+        return serie * 2 / (pi ** (1 / 2))
