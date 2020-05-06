@@ -38,6 +38,6 @@ class Neuron:
 
         def sigmoid(num):
             """ Logit or sigmoid function"""
-            return 1/(1 + np.e**num)
+            return 1/(1 + np.e**(-num))
         self.__A = np.apply_along_axis(sigmoid, 1, self.__A)
         return self.__A
