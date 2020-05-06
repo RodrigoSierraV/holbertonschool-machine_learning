@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 import numpy as np
+""" Module to Create a neuron
+"""
 
 
 class Neuron:
-
+    """ Class that models a Neuron"""
     def __init__(self, nx):
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')
