@@ -11,7 +11,7 @@ class Neuron:
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')
         if nx < 1:
-            raise ValueError('nx must be a positive')
+            raise ValueError('nx must be a positive integer')
         self.nx = nx
         self.W = np.random.normal(size=(1, nx))
         self.b = 0
