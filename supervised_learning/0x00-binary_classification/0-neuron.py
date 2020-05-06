@@ -7,6 +7,7 @@ import numpy as np
 class Neuron:
     """ Class that models a Neuron"""
     def __init__(self, nx):
+        """ Class constructor for Neuron"""
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')
         if nx < 1:
