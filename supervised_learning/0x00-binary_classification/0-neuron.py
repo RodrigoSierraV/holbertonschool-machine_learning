@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-import numpy as np
 """ Module to Create a neuron
 """
+import numpy as np
 
 
 class Neuron:
