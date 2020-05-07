@@ -52,13 +52,7 @@ class Neuron:
     def evaluate(self, X, Y):
         """ Evaluates the neuron’s predictions"""
         A = self.forward_prop(X)
-
-        def classify(x):
-            """Determine prediction
-            1 if the output of the network is >= 0.5 and 0 otherwise
-            """
-            return 1 if x >= 0.5 else 0
         cost = self.cost(Y, A)
-        A = np.apply_along_axis(classify, 0, A)
+        A = np.where(A >= 0.5, 1, 0)
 
         return A, cost
