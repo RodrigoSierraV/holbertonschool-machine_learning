@@ -56,11 +56,13 @@ class NeuralNetwork:
 
     def forward_prop(self, X):
         """ Calculates the forward propagation of the neuron"""
-        self.__A1 = np.matmul(self.__W1, X) + self.__b1
-        self.__A2 = np.matmul(self.__W2, self.__A1) + self.__b2
 
         def sigmoid(num):
             """ Logit or sigmoid function"""
             return 1/(1 + np.e**(-num))
+        self.__A1 = np.matmul(self.__W1, X) + self.__b1
+        self.__A1 = sigmoid(self.__A1)
+        self.__A2 = np.matmul(self.__W2, self.__A1) + self.__b2
         self.__A2 = sigmoid(self.__A2)
+
         return self.__A1, self.__A2
