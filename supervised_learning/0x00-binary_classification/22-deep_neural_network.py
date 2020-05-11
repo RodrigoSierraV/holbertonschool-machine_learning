@@ -97,3 +97,19 @@ class DeepNeuralNetwork:
             self.__weights[w] = weights[w] - alpha * dw
             self.__weights[bias] = weights[bias] - alpha * db
         return self.__weights
+
+    def train(self, X, Y, iterations=5000, alpha=0.05):
+        """Train the deep neural network"""
+        if not isinstance(iterations, int):
+            raise TypeError('iterations must be an integer')
+        if iterations < 1:
+            raise ValueError('iterations must be a positive integer')
+        if not isinstance(alpha, float):
+            raise TypeError('alpha must be a float')
+        if alpha < 0:
+            raise ValueError('alpha must be positive')
+        for _ in range(iterations):
+            _, self.__cache = self.forward_prop(X)
+            self.__weights = self.gradient_descent(Y, self.__cache, alpha)
+
+        return self.evaluate(X, Y)
