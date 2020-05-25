@@ -35,15 +35,11 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
             n_minibatches = X_shuffled.shape[0] // batch_size
             if X_shuffled.shape[0] % batch_size != 0:
                 n_minibatches += 1
-            mini_batches = []
-            for i in range(n_minibatches):
-                X_mini = X_shuffled[i * batch_size:(i + 1) * batch_size, :]
-                Y_mini = Y_shuffled[i * batch_size:(i + 1) * batch_size, :]
-                mini_batches.append((X_mini, Y_mini))
 
             if epoch < epochs:
-                for i in range(len(mini_batches)):
-                    X_mini, Y_mini = mini_batches[i]
+                for i in range(len(n_minibatches)):
+                    X_mini = X_shuffled[i * batch_size:(i + 1) * batch_size, :]
+                    Y_mini = Y_shuffled[i * batch_size:(i + 1) * batch_size, :]
                     feed_batch = {x: X_mini, y: Y_mini}
                     session.run(train_op, feed_dict=feed_batch)
                     if i % 100 == 0 and i != 0:
