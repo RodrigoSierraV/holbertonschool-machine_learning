@@ -11,9 +11,8 @@ def create_mini_batches(X_shuffled, Y_shuffled, batch_size):
     mini_batches = []
     data = np.hstack((X_shuffled, Y_shuffled))
     n_minibatches = data.shape[0] // batch_size
-    i = 0
 
-    for i in range(n_minibatches + 1):
+    for i in range(n_minibatches):
         mini_batch = data[i * batch_size:(i + 1) * batch_size, :]
         X_mini = mini_batch[:, : -Y_shuffled.shape[1]]
         Y_mini = mini_batch[:, -Y_shuffled.shape[1]:]
@@ -39,10 +38,10 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
         accuracy = tf.get_collection('accuracy')[0]
         loss = tf.get_collection('loss')[0]
         train_op = tf.get_collection('train_op')[0]
-        feed_train = {x: X_train, y: Y_train}
         feed_valid = {x: X_valid, y: Y_valid}
 
-        for epoch in range(epochs):
+        for epoch in range(epochs + 1):
+            feed_train = {x: X_train, y: Y_train}
             train_cost = session.run(loss, feed_dict=feed_train)
             train_accuracy = session.run(accuracy, feed_dict=feed_train)
             valid_cost = session.run(loss, feed_dict=feed_valid)
@@ -55,21 +54,18 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
             X_shuffled, Y_shuffled = shuffle_data(X_train, Y_train)
             mini_batches = create_mini_batches(X_shuffled,
                                                Y_shuffled, batch_size)
+            if epoch < epochs:
+                for i in range(len(mini_batches)):
+                    X_mini, Y_mini = mini_batches[i]
+                    feed_batch = {x: X_mini, y: Y_mini}
+                    session.run(train_op, feed_dict=feed_batch)
+                    if i % 100 == 0 and i != 0:
+                        step_cost = session.run(loss, feed_dict=feed_batch)
+                        step_accuracy = session.run(accuracy,
+                                                    feed_dict=feed_batch)
+                        print("\tStep {}:".format(i))
+                        print("\t\tCost: {}".format(step_cost))
+                        print("\t\tAccuracy: {}".format(step_accuracy))
 
-            for i in range(len(mini_batches)):
-                X_mini, Y_mini = mini_batches[i]
-                feed_batch = {x: X_mini, y: Y_mini}
-                session.run(train_op, feed_dict=feed_batch)
-                if i % 100 == 0 and i != 0:
-                    step_accuracy = session.run(accuracy, feed_dict=feed_batch)
-                    step_cost = session.run(loss, feed_dict=feed_batch)
-                    print("\tStep {}:".format(i))
-                    print("\t\tCost: {}".format(step_cost))
-                    print("\t\tAccuracy: {}".format(step_accuracy))
-        print("After {} epochs:".format(epoch + 1))
-        print("\tTraining Cost: {}".format(train_cost))
-        print("\tTraining Accuracy: {}".format(train_accuracy))
-        print("\tValidation Cost: {}".format(valid_cost))
-        print("\tValidation Accuracy: {}".format(valid_accuracy))
         save_path = saver.save(session, save_path)
     return save_path
