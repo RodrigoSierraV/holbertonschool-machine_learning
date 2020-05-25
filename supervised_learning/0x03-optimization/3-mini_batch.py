@@ -1,25 +1,8 @@
 #!/usr/bin/env python3
 """ Module to train a Neural network with mini-batch gradient descent"""
-import numpy as np
 import tensorflow as tf
 
 shuffle_data = __import__('2-shuffle_data').shuffle_data
-
-
-def create_mini_batches(X_shuffled, Y_shuffled, batch_size):
-    """Creates mini-batches from entire data"""
-    mini_batches = []
-    data = np.hstack((X_shuffled, Y_shuffled))
-    n_minibatches = data.shape[0] // batch_size
-    if data.shape[0] % batch_size != 0:
-        n_minibatches += 1
-
-    for i in range(n_minibatches):
-        mini_batch = data[i * batch_size:(i + 1) * batch_size, :]
-        X_mini = mini_batch[:, : -Y_shuffled.shape[1]]
-        Y_mini = mini_batch[:, -Y_shuffled.shape[1]:]
-        mini_batches.append((X_mini, Y_mini))
-    return mini_batches
 
 
 def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
@@ -49,8 +32,15 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
             print("\tValidation Cost: {}".format(valid_cost))
             print("\tValidation Accuracy: {}".format(valid_accuracy))
             X_shuffled, Y_shuffled = shuffle_data(X_train, Y_train)
-            mini_batches = create_mini_batches(X_shuffled,
-                                               Y_shuffled, batch_size)
+            n_minibatches = X_shuffled.shape[0] // batch_size
+            if X_shuffled.shape[0] % batch_size != 0:
+                n_minibatches += 1
+            mini_batches = []
+            for i in range(n_minibatches):
+                X_mini = X_shuffled[i * batch_size:(i + 1) * batch_size, :]
+                Y_mini = Y_shuffled[i * batch_size:(i + 1) * batch_size, :]
+                mini_batches.append((X_mini, Y_mini))
+
             if epoch < epochs:
                 for i in range(len(mini_batches)):
                     X_mini, Y_mini = mini_batches[i]
