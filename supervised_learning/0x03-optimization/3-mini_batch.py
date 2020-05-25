@@ -37,7 +37,7 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
                 n_minibatches += 1
 
             if epoch < epochs:
-                for i in range(len(n_minibatches)):
+                for i in range(n_minibatches):
                     X_mini = X_shuffled[i * batch_size:(i + 1) * batch_size, :]
                     Y_mini = Y_shuffled[i * batch_size:(i + 1) * batch_size, :]
                     feed_batch = {x: X_mini, y: Y_mini}
