@@ -6,23 +6,22 @@ import tensorflow as tf
 shuffle_data = __import__('2-shuffle_data').shuffle_data
 
 
-def create_mini_batches(X, Y, batch_size):
+def create_mini_batches(X_shuffled, Y_shuffled, batch_size):
     """Creates mini-batches from entire data"""
     mini_batches = []
-    X_shuffled, Y_shuffled = shuffle_data(X, Y)
     data = np.hstack((X_shuffled, Y_shuffled))
     n_minibatches = data.shape[0] // batch_size
     i = 0
 
     for i in range(n_minibatches + 1):
         mini_batch = data[i * batch_size:(i + 1) * batch_size, :]
-        X_mini = mini_batch[:, : -Y.shape[1]]
-        Y_mini = mini_batch[:, -Y.shape[1]:]
+        X_mini = mini_batch[:, : -Y_shuffled.shape[1]]
+        Y_mini = mini_batch[:, -Y_shuffled.shape[1]:]
         mini_batches.append((X_mini, Y_mini))
     if data.shape[0] % batch_size != 0:
         mini_batch = data[i * batch_size:data.shape[0]]
-        X_mini = mini_batch[:, :-Y.shape[1]]
-        Y_mini = mini_batch[:, -Y.shape[1]:]
+        X_mini = mini_batch[:, :-Y_shuffled.shape[1]]
+        Y_mini = mini_batch[:, -Y_shuffled.shape[1]:]
         mini_batches.append((X_mini, Y_mini))
     return mini_batches
 
@@ -42,7 +41,7 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
         train_op = tf.get_collection('train_op')[0]
         feed_train = {x: X_train, y: Y_train}
         feed_valid = {x: X_valid, y: Y_valid}
-        m = X_train.shape[0]
+
         for epoch in range(epochs):
             train_cost = session.run(loss, feed_dict=feed_train)
             train_accuracy = session.run(accuracy, feed_dict=feed_train)
@@ -53,7 +52,9 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
             print("\tTraining Accuracy: {}".format(train_accuracy))
             print("\tValidation Cost: {}".format(valid_cost))
             print("\tValidation Accuracy: {}".format(valid_accuracy))
-            mini_batches = create_mini_batches(X_train, Y_train, batch_size)
+            X_shuffled, Y_shuffled = shuffle_data(X_train, Y_train)
+            mini_batches = create_mini_batches(X_shuffled,
+                                               Y_shuffled, batch_size)
 
             for i in range(len(mini_batches)):
                 X_mini, Y_mini = mini_batches[i]
