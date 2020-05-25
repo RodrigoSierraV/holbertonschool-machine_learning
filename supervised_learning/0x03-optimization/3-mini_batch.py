@@ -11,15 +11,12 @@ def create_mini_batches(X_shuffled, Y_shuffled, batch_size):
     mini_batches = []
     data = np.hstack((X_shuffled, Y_shuffled))
     n_minibatches = data.shape[0] // batch_size
+    if data.shape[0] % batch_size != 0:
+        n_minibatches += 1
 
     for i in range(n_minibatches):
         mini_batch = data[i * batch_size:(i + 1) * batch_size, :]
         X_mini = mini_batch[:, : -Y_shuffled.shape[1]]
-        Y_mini = mini_batch[:, -Y_shuffled.shape[1]:]
-        mini_batches.append((X_mini, Y_mini))
-    if data.shape[0] % batch_size != 0:
-        mini_batch = data[i * batch_size:data.shape[0]]
-        X_mini = mini_batch[:, :-Y_shuffled.shape[1]]
         Y_mini = mini_batch[:, -Y_shuffled.shape[1]:]
         mini_batches.append((X_mini, Y_mini))
     return mini_batches
