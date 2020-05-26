@@ -9,7 +9,6 @@ def specificity(confusion):
     """
     spec = np.zeros(confusion.shape[0])
     total = sum(confusion)
-    print(total)
     for i in range(confusion.shape[0]):
         val = confusion[i, i]
         fp = sum(confusion[:, i]) - val
