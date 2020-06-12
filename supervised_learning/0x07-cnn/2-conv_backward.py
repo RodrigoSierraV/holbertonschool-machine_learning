@@ -28,7 +28,7 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
                     c = col * sw
                     d = col * sw + kw
                     dA[img, a:b, c:d, :] += W[:, :, :, ch]\
-                                            * dZ[img, row, col, ch]
+                        * dZ[img, row, col, ch]
                     dW[:, :, :, ch] += pad_res[img, a:b, c:d, :]\
-                                       * dZ[img, row, col, ch]
+                        * dZ[img, row, col, ch]
     return dA, dW, db
