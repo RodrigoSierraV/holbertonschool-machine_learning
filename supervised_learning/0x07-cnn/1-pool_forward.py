@@ -26,4 +26,4 @@ def pool_forward(A_prev, kernel_shape, stride=(1, 1), mode='max'):
                                col * sw:kw + col * sw, ch],
                         axis=(1, 2)
                     )
-        return conv_result
+    return conv_result
