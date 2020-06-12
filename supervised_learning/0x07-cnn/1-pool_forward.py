@@ -13,16 +13,17 @@ def pool_forward(A_prev, kernel_shape, stride=(1, 1), mode='max'):
     conv_result = np.zeros((m, conv_h, conv_w, c))
     for row in range(conv_h):
         for col in range(conv_w):
-            if mode == 'max':
-                conv_result[:, row, col] = np.max(
-                    A_prev[:, row * sh:(kh + (row * sh)),
-                           col * sw:(kw + (col * sw))],
-                    axis=(1, 2)
-                )
-            else:
-                conv_result[:, row, col] = np.mean(
-                    A_prev[:, row * sh:(kh + (row * sh)),
-                           col * sw:(kw + (col * sw))],
-                    axis=(1, 2)
-                )
+            for ch in range(c):
+                if mode == 'max':
+                    conv_result[:, row, col, ch] = np.max(
+                        A_prev[:, row * sh:kh + row * sh,
+                               col * sw:kw + col * sw, ch],
+                        axis=(1, 2)
+                    )
+                else:
+                    conv_result[:, row, col, ch] = np.mean(
+                        A_prev[:, row * sh:kh + row * sh,
+                               col * sw:kw + col * sw, ch],
+                        axis=(1, 2)
+                    )
         return conv_result
