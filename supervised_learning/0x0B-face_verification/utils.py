@@ -3,6 +3,7 @@
 import os
 import numpy as np
 import cv2
+import csv
 
 
 def load_images(images_path, as_array=True):
@@ -30,3 +31,15 @@ def load_images(images_path, as_array=True):
     if as_array is True:
         images = np.stack(images, axis=0)
     return images, img_names
+
+
+def load_csv(csv_path, params={}):
+    """
+    loads the contents of a csv file as a list of lists:
+
+    csv_path is the path to the csv to load
+    params are the parameters to load the csv with
+    Returns: a list of lists representing the contents found in csv_path
+    """
+    with open(csv_path, 'r') as csv_file:
+        return [line for line in csv.reader(csv_file, params)]
