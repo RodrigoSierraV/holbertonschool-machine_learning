@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Face Align """
+""" Align Faces """
 import dlib
 import cv2
 import numpy as np
 
 
 class FaceAlign:
-    """ Initialize Face Align """
+    """ Face Align instance constructor """
     def __init__(self, shape_predictor_path):
         """
         shape_predictor_path is the path to the dlib shape predictor model
