@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Updates the function train model"""
+"""
+Updates the function train model
+"""
 import tensorflow.keras as K
 
 
@@ -21,9 +23,10 @@ def train_model(network, data, labels, batch_size, epochs,
             , we have chosen to set the default to False.
     Returns: the History object generated after training the model
     """
-    return network.fit(data, labels,
-                       batch_size=batch_size,
-                       epochs=epochs,
-                       verbose=verbose,
-                       shuffle=shuffle,
-                       validation_data=validation_data)
+    history = network.fit(data, labels,
+                          batch_size=batch_size,
+                          epochs=epochs,
+                          verbose=verbose,
+                          shuffle=shuffle,
+                          validation_data=validation_data)
+    return history
