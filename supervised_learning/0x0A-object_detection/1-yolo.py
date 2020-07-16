@@ -76,7 +76,7 @@ class Yolo:
         def sigmoid(x):
             """Compute sigmoid of x"""
             return 1 / (1 + np.exp(-x))
-        for output in outputs:
+        for i, output in enumerate(outputs):
             grid_height, grid_width, anchor_boxes, classes = output.shape
             box = np.zeros(output[:, :, :, :4].shape)
             t_x = output[:, :, :, 0]
@@ -84,12 +84,12 @@ class Yolo:
             t_w = output[:, :, :, 2]
             t_h = output[:, :, :, 3]
 
-            m_h = np.arange(grid_height).reshape(1, grid_height)
-            m_h = np.repeat(m_h, grid_width, axis=0).T
-            m_h = np.repeat(m_h[:, :, np.newaxis], anchor_boxes, axis=2)
-            m_w = np.arange(grid_width).reshape(1, grid_width)
-            m_w = np.repeat(m_w, grid_height, axis=0)
-            m_w = np.repeat(m_w[:, :, np.newaxis], anchor_boxes, axis=2)
+            prev_anchor_w = self.anchors[:, :, 0]
+            anchor_w = np.tile(prev_anchor_w[i], grid_width)
+            anchor_w = anchor_w.reshape(grid_width, 1, len(prev_anchor_w[i]))
+            prev_anchor_h = self.anchors[:, :, 1]
+            anchor_h = np.tile(prev_anchor_h[i], grid_height)
+            anchor_h = anchor_h.reshape(grid_height, 1, len(prev_anchor_h[i]))
 
             cx = np.tile(np.arange(grid_width), grid_height)
             cx = cx.reshape(grid_width, grid_width, 1)
@@ -99,8 +99,8 @@ class Yolo:
 
             pred_x = sigmoid(t_x) + cx
             pred_y = sigmoid(t_y) + cy
-            pred_w = np.exp(t_w) * m_w
-            pred_h = np.exp(t_h) * m_h
+            pred_w = np.exp(t_w) * anchor_w
+            pred_h = np.exp(t_h) * anchor_h
 
             norm_x = pred_x / grid_width
             norm_y = pred_y / grid_height
