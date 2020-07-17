@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 """ Module to create a deep neural network """
-
 import numpy as np
-
 import pickle
-
 import matplotlib.pyplot as plt
 
 
