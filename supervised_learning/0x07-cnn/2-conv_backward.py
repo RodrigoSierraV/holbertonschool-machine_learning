@@ -5,9 +5,9 @@ import numpy as np
 
 def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     """ Back prop for NN layer"""
-    m, h_prev, w_prev, c_prev = A_prev.shape
+    m, h_prev, w_prev, _ = A_prev.shape
     _, h_new, w_new, _ = dZ.shape
-    kh, kw, _, c_new = W.shape
+    kh, kw, c_prev, c_new = W.shape
     sh, sw = stride
 
     if padding == "same":
@@ -35,5 +35,5 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
                     dW[:, :, :, ch] += pad_img[img, a:b, c:d, :]\
                         * dZ[img, row, col, ch]
     if padding == 'same':
-        dA = dA[:, ph:-ph, pw: -pw, :]
+        dA = dA[:, ph:-ph, pw:-pw, :]
     return dA, dW, db
