@@ -70,14 +70,14 @@ class DeepNeuralNetwork:
             cache = self.__cache[cache]
             z = np.matmul(weights, cache) + self.__weights[bias]
             A = 'A{}'.format(layer + 1)
-            if layer < self.__L - 1:
+            if layer == self.__L - 1:
+                prop = np.sum(np.exp(z), axis=0, keepdims=True)
+                self.__cache[A] = np.exp(z) / prop
+            else:
                 if self.__activation == 'sig':
                     self.__cache[A] = 1 / (1 + np.exp(-z))
                 else:
                     self.__cache[A] = np.tanh(z)
-            else:
-                prop = np.sum(np.exp(z), axis=0, keepdims=True)
-                self.__cache[A] = np.exp(z) / prop
         out = 'A{}'.format(self.__L)
         return self.__cache[out], self.__cache
 
