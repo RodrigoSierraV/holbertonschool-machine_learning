@@ -22,5 +22,5 @@ def update_variables_Adam(alpha, beta1, beta2, epsilon, var, grad, v, s, t):
 
     m_hat = mt / (1 - beta1 ** t)
     v_hat = vt / (1 - beta2 ** t)
-    var = var - alpha * (m_hat / (v_hat ** (1 / 2) + epsilon))
-    return var, m_hat, v_hat
+    var = var - alpha * (m_hat / (np.sqrt(v_hat) + epsilon))
+    return var, mt, vt
