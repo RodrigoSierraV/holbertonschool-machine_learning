@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Module to create a one-hot decoder"""
-
+""" One-hot decoder """
 import numpy as np
 
 
 def one_hot_decode(one_hot):
-    """Decodes one_hot"""
-    try:
-        return np.argmax(one_hot, axis=0)
-    except Exception:
+    """Decodes a one-hot encode"""
+    if type(one_hot) is not np.ndarray:
         return None
+    if len(one_hot) == 0 or len(one_hot.shape) != 2:
+        return None
+    return np.argmax(one_hot, axis=0)
+
