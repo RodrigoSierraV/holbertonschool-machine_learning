@@ -2,6 +2,11 @@
 """ Compute the determinant of a simetric matrix"""
 
 
+def getMatrixMinor(m, i, j):
+    """calculates the minor of a squared matrix"""
+    return [row[:j] + row[j+1:] for row in (m[:i] + m[i+1:])]
+
+
 def determinant(matrix):
     """
     matrix is a list of lists whose determinant should be calculated
@@ -22,12 +27,7 @@ def determinant(matrix):
     if len(matrix) is 2:
         return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
     deter = 0
-    for fc in range(len(matrix)):
-        mat_i = matrix.copy()
-        mat_i = mat_i[1:]
-        mat_i = [row[0:fc] + row[fc + 1:] for row in mat_i]
-        sign = (-1) ** fc
-        mat_i_det = determinant(mat_i)
-        deter += sign * matrix[0][fc] * mat_i_det
-
-    return deter
+    for c in range(len(matrix)):
+        deter += ((-1.0) ** c) * matrix[0][c] *\
+                 determinant(getMatrixMinor(matrix, 0, c))
+    return int(deter)
