@@ -11,7 +11,7 @@ def cofactor(matrix):
         raise TypeError("matrix must be a list of lists")
     if not all([isinstance(row, list) for row in matrix]):
         raise TypeError("matrix must be a list of lists")
-    if len(matrix) != len(matrix[0]) or len(matrix) is 0:
+    if not all(len(row) == len(matrix) for row in matrix):
         raise ValueError("matrix must be a non-empty square matrix")
     cofactor_m = minor(matrix)
     for i in range(len(matrix)):
