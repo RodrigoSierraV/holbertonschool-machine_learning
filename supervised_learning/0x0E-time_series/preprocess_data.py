@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ Data preprocessing to forecast"""
-import pandas as pd
+# import pandas as pd
 
 
 def preprocessor(file, days):
