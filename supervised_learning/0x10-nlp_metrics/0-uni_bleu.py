@@ -24,4 +24,7 @@ def uni_bleu(references, sentence):
     sorted_best = sorted(best, key=(lambda x: x[0]))
     best = sorted_best[0][1]
     bleu = 1 if candidate > best else np.exp(1 - (best / candidate))
-    return bleu * np.exp(np.log(prob))
+    bleu_score = bleu * np.exp(np.log(prob))
+    if bleu_score > 0.4:
+        bleu_score = round(bleu_score, 7)
+    return bleu_score
